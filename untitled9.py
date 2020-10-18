@@ -16,33 +16,49 @@ import numpy as np
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 import time
 
+g=0
 id_loop=0
 encoder=0
 speed=0
 t=0
 ts=[0]
 xs=[0]
-ys=[0]
+y_speed=[0]
+y_angle=[0]
+y_rms=[0]
+var1='n'
 
-fig = plt.figure(figsize=(10, 8), dpi=100)
-ax1 = fig.add_subplot(2,2,1)
-ax2 = fig.add_subplot(2,2,2)
+
+fig = plt.figure(figsize=(10,8))
+grid = plt.GridSpec(2, 6, wspace=1, hspace=0.3)
+
+
+ax1=fig.add_subplot(grid[0, 0:])
+ax2=fig.add_subplot(grid[1, 0:2])
+ax3=fig.add_subplot(grid[1, 2:4])
+ax4=fig.add_subplot(grid[1, 4:])
 
 window=Tk()
-window.geometry("800x400") 
+window.geometry("800x500") 
 window.title("controler")
 
 def animate(i):
 
-    global t,ts,ys
+    global t,ts,y_speed,y_angle,y_rms
 
     ax1.clear()
-    ax1.plot(ts, ys)
+    ax2.clear()
+    ax3.clear()
+    
+    ax1.plot(ts, y_speed)
+    ax1.set_ylabel('predkosc obrotowa [obr/min]')
+    ax2.plot(ts, y_angle)
+    ax3.plot(ts, y_rms)
 
 
 def myClick():
-       
-    jstring = '{"settings":"t","set":"1","current":"0.5","speed":"2200","speed_Kp":"5","speed_Ki":"5","speed_Kd":"0","id_Kp":"1","id_Ki":"1","id_Kd":"0","iq_Kp":"4","iq_Ki":"1","iq_Kd":"0"}'
+    global g   
+    jstring = '{"settings":"t","set":"1","current":"0.5","speed":"2200","speed_Kp":"5","speed_Ki":"5","speed_Kd":"0","id_Kp":"1","id_Ki":"1","id_Kd":"0","iq_Kp":"4","iq_Ki":"1","iq_Kd":"0","a_set":"1","angle":"1000","a_Kp":"5", "a_Ki":"1", "a_Kd":"0"}'
     js=json.loads(jstring)
     js["settings"]='t'
     js["set"]='1'
@@ -57,6 +73,12 @@ def myClick():
     js["iq_Kp"]=e3.get()
     js["iq_Ki"]=e4.get()
     js["iq_Kd"]=e5.get()
+    js["a_set"]=var1.get()
+    js["angle"]=e15.get()
+    js["a_Kp"]=e12.get()
+    js["a_Ki"]=e13.get()
+    js["a_Kd"]=e14.get()
+
     
     
     message = json.dumps(js)
@@ -163,8 +185,9 @@ def myClick2():
     #flag=1
     t=0
     ts.clear()
-    ys.clear()
-    xs.clear()
+    y_speed.clear()
+    y_angle.clear()
+    y_rms.clear()
     window.after_cancel(id_loop)
     
    
@@ -175,7 +198,7 @@ def myClick2():
 
     
 def update():
-    global id_loop,flag,speed,encoder,t,ts,xs,ys,j
+    global id_loop,flag,speed,encoder,t,ts,xs,j,y_speed,y_angle,y_rms
     message = '{"settings":"n"}'
     #js=json.loads(jstring)
     #js["settings"]='n'
@@ -215,11 +238,16 @@ def update():
         j=json.loads(data)
         speed=float(j["speed"])
         encoder=int(j["encoder"])
+        rms=float(j["rms"])
         ts.append(t)
         t=t+0.01
-        ys.append(speed)
-        ts=ts[-50:]
-        ys=ys[-50:]
+        y_speed.append(speed)
+        y_angle.append(encoder)
+        y_rms.append(rms)
+        ts=ts[-200:]
+        y_speed=y_speed[-200:]
+        y_angle=y_angle[-200:]
+        y_rms=y_rms[-200:]
 
         
         
@@ -248,7 +276,7 @@ label2=Label(window,text="")
 label2.grid(row=i,column=0)
 
 i=i+1
-label1=Label(window,text="zadana prędkosc")    
+label1=Label(window,text="zadana prędkosc [obr/min]")    
 label1.grid(row=i,column=0)
 e1=Entry(window)
 e1.insert(0,"2500");
@@ -263,11 +291,27 @@ button6 = Button(window, text = "Stop",height=2,width=10 ,command=myClick4)
 button6.grid(row=i,column=4,rowspan=2,columnspan=4)
 
 i=i+1
-label2=Label(window,text="zadany prąd")    
+label2=Label(window,text="ograniczenie wartosci prądu [A]")    
 label2.grid(row=i,column=0)
 e2=Entry(window)
 e2.insert(0,"0.5");
 e2.grid(row=i,column=1)
+
+
+i=i+1
+label2=Label(window,text="zadane położenie wirnika [stopnie]")    
+label2.grid(row=i,column=0)
+e15=Entry(window)
+e15.insert(0,"20000");
+e15.grid(row=i,column=1)
+
+
+var1= StringVar()
+
+ch1=Checkbutton(window, text="sdsds", variable=var1, onvalue="y", offvalue="n")
+ch1.grid(row=i,column=2)
+
+
 
 i=i+1
 label2=Label(window,text="")    
@@ -352,6 +396,37 @@ e11.insert(0,"0");
 e11.grid(row=i,column=5)
 
 i=i+1
+label5=Label(window,text="")    
+label5.grid(row=i,column=0)
+
+i=i+1
+label5=Label(window,text="NASTAWY DLA REGULATORA POŁOŻENIA")    
+label5.grid(row=i,column=0)
+
+i=i+1
+label6=Label(window,text="Kp")    
+label6.grid(row=i,column=0,sticky=E)
+e12=Entry(window)
+e12.insert(0,"5");
+e12.grid(row=i,column=1)
+
+label3=Label(window,text="Ki")    
+label3.grid(row=i,column=2)
+e13=Entry(window)
+e13.insert(0,"0");
+e13.grid(row=i,column=3)
+
+label3=Label(window,text="Kd")    
+label3.grid(row=i,column=4)
+e14=Entry(window)
+e14.insert(0,"0");
+e14.grid(row=i,column=5)
+
+i=i+1
+label5=Label(window,text="")    
+label5.grid(row=i,column=0)
+
+i=i+1
 label2=Label(window,text="------------------------------------------------------------------------------------------------------------------------------------------------------")    
 label2.grid(row=i,column=0,columnspan=6)
 
@@ -365,20 +440,18 @@ button2 = Button(window,height=2, text = "Rysuj wykres", command=myClick1)
 button2.grid(row=i,column=0)
 button3 = Button(window,height=2, text = "Stop wykres", command=myClick2)
 button3.grid(row=i,column=1)
-Label
+
 i=i+1
 label2=Label(window,text="")    
 label2.grid(row=i,column=0)
 
 i=i+1
 
-label20=Label(window,text="predkosc obrotowa [obr/min] ")    
-label20.grid(row=i,column=0,sticky=E)
+
 
 ani = animation.FuncAnimation(fig, animate, interval=100)
 
-label20=Label(window,text="predkosc obrotowa [obr/min] ")    
-label20.grid(row=i,column=0,sticky=N)
+
 
 
 window.mainloop()
