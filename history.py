@@ -1,33 +1,3 @@
-## ---(Mon Sep 14 14:53:21 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled11.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
-## ---(Mon Sep 14 14:55:35 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled11.py', wdir='C:/Users/Mateusz/.spyder-py3')
-runfile('C:/Users/Mateusz/.spyder-py3/untitled10.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
-## ---(Mon Sep 14 15:21:03 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled11.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
-## ---(Mon Sep 14 15:22:55 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled11.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
-## ---(Mon Sep 14 15:23:44 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled0.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
-## ---(Mon Sep 14 15:25:20 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled0.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
-## ---(Mon Sep 14 15:27:31 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled10.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
-## ---(Mon Sep 14 15:34:41 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled10.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
-## ---(Mon Sep 14 15:42:30 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled10.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
-## ---(Mon Sep 14 15:49:21 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled10.py', wdir='C:/Users/Mateusz/.spyder-py3')
 
 ## ---(Mon Sep 14 17:04:34 2020)---
 runfile('C:/Users/Mateusz/.spyder-py3/untitled10.py', wdir='C:/Users/Mateusz/.spyder-py3')
@@ -125,4 +95,10 @@ g
 runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
 g
 var1
+runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
+
+## ---(Mon Oct 19 19:30:58 2020)---
+runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
+
+## ---(Mon Oct 19 19:50:04 2020)---
 runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')

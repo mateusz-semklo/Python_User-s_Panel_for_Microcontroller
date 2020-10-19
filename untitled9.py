@@ -25,18 +25,21 @@ ts=[0]
 xs=[0]
 y_speed=[0]
 y_angle=[0]
-y_rms=[0]
+y_rms_Ia=[0]
+y_rms_Ib=[0]
+y_rms_Ic=[0]
 var1='n'
 
 
 fig = plt.figure(figsize=(10,8))
-grid = plt.GridSpec(2, 6, wspace=1, hspace=0.3)
+grid = plt.GridSpec(6, 6, wspace=1, hspace=0.3)
 
 
-ax1=fig.add_subplot(grid[0, 0:])
-ax2=fig.add_subplot(grid[1, 0:2])
-ax3=fig.add_subplot(grid[1, 2:4])
-ax4=fig.add_subplot(grid[1, 4:])
+ax1=fig.add_subplot(grid[0:3, :3])
+ax2=fig.add_subplot(grid[3:, :3])
+ax3=fig.add_subplot(grid[0:2, 3:])
+ax4=fig.add_subplot(grid[2:4, 3:])
+ax5=fig.add_subplot(grid[4:6, 3:])
 
 window=Tk()
 window.geometry("800x500") 
@@ -44,16 +47,30 @@ window.title("controler")
 
 def animate(i):
 
-    global t,ts,y_speed,y_angle,y_rms
+    global t,ts,y_speed,y_angle,y_rms_Ia,y_rms_Ib,y_rms_Ic
 
     ax1.clear()
     ax2.clear()
     ax3.clear()
+    ax4.clear()
+    ax5.clear()
     
     ax1.plot(ts, y_speed)
     ax1.set_ylabel('predkosc obrotowa [obr/min]')
+    
     ax2.plot(ts, y_angle)
-    ax3.plot(ts, y_rms)
+    ax2.set_ylabel('położenie wirnika [stopnie]')
+    
+    ax3.plot(ts, y_rms_Ia)
+    ax3.set_ylabel('Ia [A]')
+    
+    ax4.plot(ts, y_rms_Ib)
+    ax4.set_ylabel('Ib [A]')
+    
+    ax5.plot(ts, y_rms_Ic)
+    ax5.set_ylabel('Ic [A]')
+    
+
 
 
 def myClick():
@@ -187,18 +204,19 @@ def myClick2():
     ts.clear()
     y_speed.clear()
     y_angle.clear()
-    y_rms.clear()
+    y_rms_Ia.clear()
+    y_rms_Ib.clear()
+    y_rms_Ic.clear()
     window.after_cancel(id_loop)
     
    
     
         
-        
-        
+
 
     
 def update():
-    global id_loop,flag,speed,encoder,t,ts,xs,j,y_speed,y_angle,y_rms
+    global id_loop,flag,speed,encoder,t,ts,xs,j,y_speed,y_angle,y_rms_Ia,y_rms_Ib,y_rms_Ic
     message = '{"settings":"n"}'
     #js=json.loads(jstring)
     #js["settings"]='n'
@@ -228,7 +246,7 @@ def update():
         #amount_expected = len(message)
     
         #while amount_received < amount_expected:
-        datax = sock.recv(70)
+        datax = sock.recv(200)
         #amount_received += len(datax)
         
         data=datax.decode()    
@@ -238,36 +256,33 @@ def update():
         j=json.loads(data)
         speed=float(j["speed"])
         encoder=int(j["encoder"])
-        rms=float(j["rms"])
+        rms_Ia=float(j["rms_Ia"])
+        rms_Ib=float(j["rms_Ib"])
+        rms_Ic=float(j["rms_Ic"])
         ts.append(t)
         t=t+0.01
         y_speed.append(speed)
         y_angle.append(encoder)
-        y_rms.append(rms)
+        y_rms_Ia.append(rms_Ia)
+        y_rms_Ib.append(rms_Ib)
+        y_rms_Ic.append(rms_Ic)
         ts=ts[-200:]
         y_speed=y_speed[-200:]
         y_angle=y_angle[-200:]
-        y_rms=y_rms[-200:]
+        y_rms_Ia=y_rms_Ia[-200:]
+        y_rms_Ib=y_rms_Ib[-200:]
+        y_rms_Ic=y_rms_Ic[-200:]
 
         
         
 
     finally:
         #print('transmit and recive complete')
-        sock.close()
-     
-        
+        sock.close()      
         id_loop = window.after(50,update)
-        #label21=Label(window,text=j["speed"])    
-        #label21.grid(row=1,column=0,sticky=W)
 
 
-
-
-
-   
-   
-    
+  
 i=0
 label0=Label(window,text="UKŁAD NAPĘDOWY SILNIKA BLDC")    
 label0.grid(row=i,column=0)
@@ -449,7 +464,7 @@ i=i+1
 
 
 
-ani = animation.FuncAnimation(fig, animate, interval=100)
+ani = animation.FuncAnimation(fig, animate, interval=50)
 
 
 
