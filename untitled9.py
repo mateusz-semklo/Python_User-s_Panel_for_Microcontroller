@@ -32,7 +32,7 @@ var1='n'
 
 
 fig = plt.figure(figsize=(10,8))
-grid = plt.GridSpec(6, 6, wspace=1, hspace=0.3)
+grid = plt.GridSpec(6, 6, wspace=2, hspace=1)
 
 
 ax1=fig.add_subplot(grid[0:3, :3])
@@ -42,12 +42,12 @@ ax4=fig.add_subplot(grid[2:4, 3:])
 ax5=fig.add_subplot(grid[4:6, 3:])
 
 window=Tk()
-window.geometry("800x500") 
+window.geometry("800x600") 
 window.title("controler")
 
 def animate(i):
 
-    global t,ts,y_speed,y_angle,y_rms_Ia,y_rms_Ib,y_rms_Ic
+    global t,ts,y_speed,y_angle,y_rms_Ia,y_rms_Ib,y_rms_Ic,direction
 
     ax1.clear()
     ax2.clear()
@@ -60,6 +60,7 @@ def animate(i):
     
     ax2.plot(ts, y_angle)
     ax2.set_ylabel('położenie wirnika [stopnie]')
+    ax2.set_xlabel('czas [sekundy]')
     
     ax3.plot(ts, y_rms_Ia)
     ax3.set_ylabel('Ia [A]')
@@ -69,13 +70,16 @@ def animate(i):
     
     ax5.plot(ts, y_rms_Ic)
     ax5.set_ylabel('Ic [A]')
+    ax5.set_xlabel('czas [sekundy]')
+    
+    
     
 
 
 
 def myClick():
     global g   
-    jstring = '{"settings":"t","set":"1","current":"0.5","speed":"2200","speed_Kp":"5","speed_Ki":"5","speed_Kd":"0","id_Kp":"1","id_Ki":"1","id_Kd":"0","iq_Kp":"4","iq_Ki":"1","iq_Kd":"0","a_set":"1","angle":"1000","a_Kp":"5", "a_Ki":"1", "a_Kd":"0"}'
+    jstring = '{"settings":"t","set":"1","current":"0.5","speed":"2200","speed_Kp":"5","speed_Ki":"5","speed_Kd":"0","id_Kp":"1","id_Ki":"1","id_Kd":"0","iq_Kp":"4","iq_Ki":"1","iq_Kd":"0","a_set":"1","angle":"1000","a_Kp":"5", "a_Ki":"5", "a_Kd":"0"}'
     js=json.loads(jstring)
     js["settings"]='t'
     js["set"]='1'
@@ -216,7 +220,7 @@ def myClick2():
 
     
 def update():
-    global id_loop,flag,speed,encoder,t,ts,xs,j,y_speed,y_angle,y_rms_Ia,y_rms_Ib,y_rms_Ic
+    global id_loop,flag,speed,encoder,t,ts,xs,j,y_speed,y_angle,y_rms_Ia,y_rms_Ib,y_rms_Ic,direction
     message = '{"settings":"n"}'
     #js=json.loads(jstring)
     #js["settings"]='n'
@@ -260,7 +264,7 @@ def update():
         rms_Ib=float(j["rms_Ib"])
         rms_Ic=float(j["rms_Ic"])
         ts.append(t)
-        t=t+0.01
+        t=t+0.1
         y_speed.append(speed)
         y_angle.append(encoder)
         y_rms_Ia.append(rms_Ia)
@@ -272,7 +276,12 @@ def update():
         y_rms_Ia=y_rms_Ia[-200:]
         y_rms_Ib=y_rms_Ib[-200:]
         y_rms_Ic=y_rms_Ic[-200:]
-
+        
+        speed1.set(str(speed))
+        angle1.set(str(encoder))
+        Ia.set(str(rms_Ia))
+        Ib.set(str(rms_Ib))
+        Ic.set(str(rms_Ic))
         
         
 
@@ -291,30 +300,31 @@ label2=Label(window,text="")
 label2.grid(row=i,column=0)
 
 i=i+1
-label1=Label(window,text="zadana prędkosc [obr/min]")    
+label1=Label(window,text="prędkosc wirnika [obr/min]")    
 label1.grid(row=i,column=0)
 e1=Entry(window)
 e1.insert(0,"2500");
 e1.grid(row=i,column=1)
 
-button1 = Button(window, text = "Wyslij ustawienia",height=2 ,command=myClick)
+button1 = Button(window, text = "Wyslij ustawienia",height=2,width=13 ,command=myClick)
 button1.grid(row=i,column=2,rowspan=2,columnspan=2)
-button5 = Button(window, text = "Start", height=2,width=10 ,command=myClick3)
+button5 = Button(window, text = "Start", height=2,width=8 ,command=myClick3)
 button5.grid(row=i,column=3,columnspan=3,rowspan=2)
 
-button6 = Button(window, text = "Stop",height=2,width=10 ,command=myClick4)
+button6 = Button(window, text = "Stop",height=2,width=8 ,command=myClick4)
 button6.grid(row=i,column=4,rowspan=2,columnspan=4)
 
 i=i+1
-label2=Label(window,text="ograniczenie wartosci prądu [A]")    
+label2=Label(window,text="zadana wartosc prądu [A]")    
 label2.grid(row=i,column=0)
 e2=Entry(window)
 e2.insert(0,"0.5");
 e2.grid(row=i,column=1)
 
 
+
 i=i+1
-label2=Label(window,text="zadane położenie wirnika [stopnie]")    
+label2=Label(window,text="położenie wirnika [stopnie]")    
 label2.grid(row=i,column=0)
 e15=Entry(window)
 e15.insert(0,"20000");
@@ -322,9 +332,15 @@ e15.grid(row=i,column=1)
 
 
 var1= StringVar()
+i=i+1
+ch1=Checkbutton(window, text="regulator położenia wirnika on/off", variable=var1, onvalue="y", offvalue="n")
+ch1.grid(row=i,column=0)
 
-ch1=Checkbutton(window, text="sdsds", variable=var1, onvalue="y", offvalue="n")
-ch1.grid(row=i,column=2)
+
+button2 = Button(window,height=2,width=13, text = "Wyswietl dane", command=myClick1)
+button2.grid(row=i,column=2, columnspan=2)
+button3 = Button(window,height=2,width=13, text = "Kasuj", command=myClick2)
+button3.grid(row=i,column=3, columnspan=3)
 
 
 
@@ -428,7 +444,7 @@ e12.grid(row=i,column=1)
 label3=Label(window,text="Ki")    
 label3.grid(row=i,column=2)
 e13=Entry(window)
-e13.insert(0,"0");
+e13.insert(0,"5");
 e13.grid(row=i,column=3)
 
 label3=Label(window,text="Kd")    
@@ -445,23 +461,62 @@ i=i+1
 label2=Label(window,text="------------------------------------------------------------------------------------------------------------------------------------------------------")    
 label2.grid(row=i,column=0,columnspan=6)
 
-i=i+1
-label2=Label(window,text="")    
-label2.grid(row=i,column=0)
+speed1=StringVar()
+angle1=StringVar()
+Ia=StringVar()
+Ib=StringVar()
+Ic=StringVar()
 
-
-i=i+1
-button2 = Button(window,height=2, text = "Rysuj wykres", command=myClick1)
-button2.grid(row=i,column=0)
-button3 = Button(window,height=2, text = "Stop wykres", command=myClick2)
-button3.grid(row=i,column=1)
-
-i=i+1
-label2=Label(window,text="")    
-label2.grid(row=i,column=0)
+speed1.set("0")
+angle1.set("0")
+Ia.set("0")
+Ib.set("0")
+Ic.set("0")
 
 i=i+1
+label30=Label(window,text="POMIARY SILNIKA:")    
+label30.grid(row=i,column=0)
 
+i=i+1
+label30=Label(window,text="położenie wirnika")    
+label30.grid(row=i,column=0,sticky=E)
+label31=Label(window,textvariable=speed1)    
+label31.grid(row=i,column=1,sticky=E)
+label30=Label(window,text="[stopnie]")    
+label30.grid(row=i,column=2,columnspan=2, sticky=W)
+
+i=i+1
+label32=Label(window,text="prędkosc obrotowa wirnika")    
+label32.grid(row=i,column=0,sticky=E)
+label33=Label(window,textvariable=angle1)    
+label33.grid(row=i,column=1,sticky=E)
+label30=Label(window,text="[obr/min]")    
+label30.grid(row=i,column=2,columnspan=2, sticky=W)
+
+
+i=i+1
+label34=Label(window,text="prąd Ia")    
+label34.grid(row=i,column=0,sticky=E)
+label35=Label(window,textvariable=Ia)    
+label35.grid(row=i,column=1,sticky=E)
+label30=Label(window,text="[A]")    
+label30.grid(row=i,column=2,columnspan=2, sticky=W)
+
+i=i+1
+label36=Label(window,text="prąd Ib")    
+label36.grid(row=i,column=0,sticky=E)
+label37=Label(window,textvariable=Ib)    
+label37.grid(row=i,column=1,sticky=E)
+label30=Label(window,text="[A]")    
+label30.grid(row=i,column=2,columnspan=2, sticky=W)
+
+i=i+1
+label38=Label(window,text="prąd Ic")    
+label38.grid(row=i,column=0,sticky=E)
+label39=Label(window,textvariable=Ic)    
+label39.grid(row=i,column=1,sticky=E)
+label30=Label(window,text="[A]")    
+label30.grid(row=i,column=2,columnspan=2, sticky=W)
 
 
 ani = animation.FuncAnimation(fig, animate, interval=50)

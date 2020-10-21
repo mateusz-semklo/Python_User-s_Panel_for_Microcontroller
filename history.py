@@ -1,21 +1,3 @@
-
-## ---(Mon Sep 14 17:04:34 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled10.py', wdir='C:/Users/Mateusz/.spyder-py3')
-runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
-runfile('C:/Users/Mateusz/.spyder-py3/untitled0.py', wdir='C:/Users/Mateusz/.spyder-py3')
-runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
-runfile('C:/Users/Mateusz/.spyder-py3/untitled10.py', wdir='C:/Users/Mateusz/.spyder-py3')
-runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
-## ---(Mon Sep 14 19:10:25 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
-## ---(Mon Sep 14 19:31:06 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
-## ---(Mon Sep 14 20:50:28 2020)---
-runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
-
 ## ---(Tue Sep 15 18:04:55 2020)---
 runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
 
@@ -101,4 +83,22 @@ runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spy
 runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
 
 ## ---(Mon Oct 19 19:50:04 2020)---
+runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
+
+## ---(Tue Oct 20 19:21:50 2020)---
+runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
+
+## ---(Tue Oct 20 19:49:10 2020)---
+runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
+
+## ---(Wed Oct 21 19:59:41 2020)---
+runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
+
+## ---(Wed Oct 21 20:48:48 2020)---
+runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
+
+## ---(Wed Oct 21 21:19:31 2020)---
+runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
+
+## ---(Wed Oct 21 21:20:53 2020)---
 runfile('C:/Users/Mateusz/.spyder-py3/untitled9.py', wdir='C:/Users/Mateusz/.spyder-py3')
